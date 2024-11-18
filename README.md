@@ -1,2 +1,3 @@
 # ninjaapi
-API using Django Ninja
+API using Django Ninja 
+An example of Ninja project
