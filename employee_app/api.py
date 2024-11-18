@@ -3,6 +3,7 @@ from typing import List
 from ninja import NinjaAPI, Schema
 from django.shortcuts import get_object_or_404
 from employee_app.models import Employee
+from ninja import UploadedFile, File
 
 
 api = NinjaAPI()
@@ -13,6 +14,7 @@ class EmployeeIn(Schema):
     last_name: str
     department_id: int = None
     birthdate: date = None
+    cv : str
 
 
 class EmployeeOut(Schema):
@@ -21,11 +23,16 @@ class EmployeeOut(Schema):
     last_name: str
     department_id: int = None
     birthdate: date = None
+    cv : str
+
+
 
 
 @api.post("/employees")
-def create_employee(request, payload: EmployeeIn):
-    employee = Employee.objects.create(**payload.dict())
+def create_employee(request, payload: EmployeeIn, cv: UploadedFile = File(...)):
+    payload_dict = payload.dict()
+    employee = Employee(**payload_dict)
+    employee.cv.save(cv.name, cv) # will save model instance as well
     return {"id": employee.id}
 
 
