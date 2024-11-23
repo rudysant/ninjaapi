@@ -1,2 +1,2 @@
-ninjaapi_env/
+.env/
 *.pyc
